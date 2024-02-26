@@ -1,9 +1,27 @@
-import express from "express"
-import {json} from "body-parser"
+import express from "express";
+import { json } from "body-parser";
 
-const app = express()
-app.use(json())
+import {
+    currentUserRouter,
+    signinRouter,
+    signoutRouter,
+    signupRouter,
+} from "./routes";
+
+const app = express();
+app.use(json());
+
+app.use(currentUserRouter);
+app.use(signinRouter);
+app.use(signoutRouter);
+app.use(signupRouter);
+
+app.get("/api/users", (_, res) => {
+    res.send({
+        test: "dsadsa",
+    });
+});
 
 app.listen(3000, () => {
-    console.log("Listening on port: 3000")
-})
+    console.log("Listening on port: 3000");
+});
