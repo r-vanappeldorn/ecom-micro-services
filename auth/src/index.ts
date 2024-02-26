@@ -1,5 +1,6 @@
 import express from "express";
 import { json } from "body-parser";
+import mongoose from "mongoose";
 
 import {
     currentUserRouter,
@@ -24,6 +25,17 @@ app.get("/api/users", (_, res) => {
     });
 });
 
-app.listen(3000, () => {
-    console.log("Listening on port: 3000");
-});
+const start = async () => {
+    try {
+        await mongoose.connect("mongodb://auth-mongo-srv:27017/auth");
+        console.log("connected to mongodb");
+    } catch (err) {
+        console.error(err);
+    }
+
+    app.listen(3000, () => {
+        console.log("Listening on port: 3000");
+    });
+};
+
+start();
