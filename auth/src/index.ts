@@ -1,4 +1,5 @@
 import express from "express";
+import "express-async-errors";
 import { json } from "body-parser";
 import mongoose from "mongoose";
 
@@ -18,12 +19,6 @@ app.use(signinRouter);
 app.use(signoutRouter);
 app.use(signupRouter);
 app.use(errorHandler);
-
-app.get("/api/users", (_, res) => {
-    res.send({
-        test: "dsadsa",
-    });
-});
 
 const start = async () => {
     try {
