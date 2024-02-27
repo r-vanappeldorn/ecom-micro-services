@@ -7,7 +7,7 @@ import { app } from "../app";
 let mongo: MongoMemoryServer;
 
 declare global {
-    var signin: () => Promise<string[]>;
+    var signup: () => Promise<string[]>;
 }
 
 beforeAll(async () => {
@@ -33,7 +33,7 @@ afterAll(async () => {
     await mongoose.connection.close();
 });
 
-global.signin = async () => {
+global.signup = async () => {
     const email = "test@test.com";
     const password = "password";
 
