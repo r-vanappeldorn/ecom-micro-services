@@ -25,7 +25,7 @@ export const currentUser = (
     }
 
     if (!req.session?.jwt) {
-        return res.send({ currentUser: null });
+        return next();
     }
 
     try {
