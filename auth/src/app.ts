@@ -17,7 +17,7 @@ app.use(json());
 app.use(
     cookieSession({
         signed: false,
-        secure: true,
+        secure: process.env.NODE_ENV !== "test",
     })
 );
 
@@ -27,4 +27,4 @@ app.use(signoutRouter);
 app.use(signupRouter);
 app.use(errorHandler);
 
-export {app}
+export { app };
