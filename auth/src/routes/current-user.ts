@@ -4,7 +4,7 @@ import { InternalServerError } from "../errors/internal-server-error";
 
 const router = express.Router();
 
-router.get("api/users/currentuser", (req, res) => {
+router.get("/api/users/currentuser", (req, res) => {
     if (!process.env.JWT_KEY) {
         throw new InternalServerError("JWT_KEY env var is undefined");
     }
