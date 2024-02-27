@@ -34,7 +34,7 @@ router.post(
         }
 
         if (!process.env.JWT_KEY) {
-            throw new InternalServerError();
+            throw new InternalServerError("JWT_KEY env var is undefined");
         }
 
         const userJWT = jwt.sign(

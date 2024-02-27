@@ -1,8 +1,8 @@
 import { CustomError } from "./custom-error";
 
 export class InternalServerError extends CustomError {
-    constructor() {
-        super("Internal server error");
+    constructor(message: string) {
+        super(message);
     }
 
     statusCode = 500;
