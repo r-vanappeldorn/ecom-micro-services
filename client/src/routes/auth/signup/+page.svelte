@@ -1,4 +1,7 @@
+<!--create signup form-->
 <script lang="ts">
+	import { goto, invalidate } from '$app/navigation';
+	import { redirect } from '@sveltejs/kit';
 	import Button from '../../../components/button.svelte';
 	import Input from '../../../components/input.svelte';
 	import Logo from '../../../components/logo.svelte';
@@ -7,19 +10,26 @@
 
 	let email = '';
 	let password = '';
+	let repeatPassword = '';
 
 	let emailErrorMessage = '';
 	let passwordErrorMessage = '';
+	let repeatPasswordErrorMessage = '';
 
 	const handleSubmit = async (e: Event) => {
 		e.preventDefault();
 
-		const errors = await sendRequest('https://ticketing.io/api/users/signin', 'post', {
+		if (password !== repeatPassword) {
+			repeatPasswordErrorMessage = 'Passwords do not match';
+			return;
+		}
+
+		const errors = await sendRequest('https://ticketing.io/api/users/signup', 'post', {
 			email,
 			password
 		});
-
 		if (errors.length === 0) {
+			goto('/');
 			return;
 		}
 
@@ -45,6 +55,7 @@
 				return;
 			case 'password':
 				passwordErrorMessage = message;
+				repeatPasswordErrorMessage = message;
 				return;
 		}
 	};
@@ -52,7 +63,7 @@
 
 <section class="flex flex-col items-center justify-center">
 	<Logo margin="mt-10" width={50} height={50} className="fill-gray-800" />
-	<h2 class="mt-5 text-center text-xl font-medium text-gray-800">Signin</h2>
+	<h2 class="mt-5 text-center text-xl font-medium text-gray-800">Signup</h2>
 	<form
 		on:submit={handleSubmit}
 		class="mt-5 w-full max-w-xs rounded border border-gray-300 bg-white p-5 sm:p-5 md:max-w-[18rem]"
@@ -64,6 +75,12 @@
 			bind:value={password}
 			label="Password:"
 		/>
+		<Input
+			bind:errorMessage={repeatPasswordErrorMessage}
+			type="password"
+			bind:value={repeatPassword}
+			label="Repeat Password:"
+		/>
 		<Button>Submit</Button>
 	</form>
 
@@ -71,8 +88,9 @@
 		class="mt-5 flex w-full max-w-xs items-center justify-center rounded border border-gray-300 p-5 sm:p-5 md:max-w-[18rem]"
 	>
 		<span class="text-sm"
-			>New to Ticketing? <a href="/auth/signup" class="cursor-pointer text-blue-500 underline"
-				>Create a account</a
+			>Already have an account? <a
+				href="/auth/signin"
+				class="cursor-pointer text-blue-500 underline">Signin</a
 			></span
 		>
 	</div>
