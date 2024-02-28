@@ -22,7 +22,8 @@
 		class="border border-gray-300 rounded sm:p-5 p-5 mt-5 w-full md:max-w-[18rem] max-w-xs flex items-center justify-center"
 	>
 		<span class="text-sm"
-			>New to Ticketing? <a class="text-blue-500 underline cursor-pointer">Create a account</a
+			>New to Ticketing? <a href="/auth/signup" class="text-blue-500 underline cursor-pointer"
+				>Create a account</a
 			></span
 		>
 	</div>
