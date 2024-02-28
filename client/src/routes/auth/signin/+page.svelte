@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import Button from '../../../components/button.svelte';
 	import Input from '../../../components/input.svelte';
 	import Logo from '../../../components/logo.svelte';
@@ -20,6 +21,7 @@
 		});
 
 		if (errors.length === 0) {
+			goto('/')
 			return;
 		}
 
