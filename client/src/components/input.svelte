@@ -5,18 +5,26 @@
 	export let label = '';
 	export let id = '';
 	export let type: HTMLInputTypeAttribute = 'text';
+	export let errorMessage = '';
 
 	const handleInput = (e: Event) => {
+		errorMessage = '';
 		value = (e.target as HTMLInputElement).value;
 	};
+
+	$: errorTheme =
+		errorMessage !== '' ? 'text-red-500 border-red-500' : 'text-gray-500 border-gray-300';
 </script>
 
-<div class="flex flex-col mb-2">
-	<label class="text-gray-700 text-sm font-medium mb-1" for={id}>{label}</label>
+<div class="mb-2 flex flex-col">
+	<label class="mb-1 text-sm font-medium text-gray-700" for={id}>{label}</label>
 	<input
 		{type}
-		class=" outline-none rounded text-sm border focus:border-2 border-gray-300 focus:border-blue-500 max-w-xs w-full bg-white text-gray-500 py-2 px-3"
+		class="w-full max-w-xs rounded border bg-white px-3 py-2 text-sm outline-none focus:border-2 focus:border-blue-500 {errorTheme}"
 		{id}
 		on:input={handleInput}
 	/>
+	{#if errorMessage !== ''}
+		<span class="mt-1 text-xs text-red-500">{errorMessage}</span>
+	{/if}
 </div>
