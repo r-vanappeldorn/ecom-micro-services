@@ -2,11 +2,11 @@ import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import jwt from "jsonwebtoken";
 
-import { validateRequest } from "../middlewares/validate-request";
+import { validateRequest } from "@demo.io/lib/build";
 import { User } from "../models/user";
-import { BadRequestError } from "../errors/bad-request-error";
+import { BadRequestError } from "@demo.io/lib/build";
 import { PasswordManager } from "../services/password-manager";
-import { InternalServerError } from "../errors/internal-server-error";
+import { InternalServerError } from "@demo.io/lib/build";
 
 const router = express.Router();
 

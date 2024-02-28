@@ -9,7 +9,7 @@ import {
     signoutRouter,
     signupRouter,
 } from "./routes";
-import { errorHandler } from "./middlewares/error-handler";
+import { errorHandler } from "@demo.io/lib/build";
 
 const app = express();
 app.set("trust proxy", true);
