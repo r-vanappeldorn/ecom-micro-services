@@ -1,9 +1,5 @@
 import type { Cookies } from '@sveltejs/kit';
-
-type User = {
-	id: string;
-	email: string;
-};
+import type { User } from '../types/user';
 
 export const getCurrentUser = async (cookies: Cookies): Promise<User | null> => {
 	try {
