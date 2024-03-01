@@ -16,6 +16,7 @@ func main() {
 
 	r := routes.New(db)
 	app.GET("/api/tickets", r.GetTickets)
+	app.GET("/api/tickets/:id", r.GetTicket)
 	app.POST("/api/tickets", middleware.RequireAuth, r.CreateTicket)
 
 	defer close()
