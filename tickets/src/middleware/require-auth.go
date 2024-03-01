@@ -1,17 +1,22 @@
 package middleware
 
 import (
-	"fmt"
+	"io/ioutil"
 	"net/http"
 
+	"encoding/json"
+
 	"github.com/gin-gonic/gin"
+
+	"ticketing.io/src/customerrors"
 )
 
 func RequireAuth(ctx *gin.Context) {
 	client := &http.Client{}
-	req, err := http.NewRequest("GET", "http://ingress-nginx-controller.ingress-nginx/api/users/currentuser", nil)
+	req, err := http.NewRequest("GET", "http://auth-srv:3000/api/users/currentuser", nil)
 	if err != nil {
-		fmt.Println(err)
+		customerrors.SendInternalServerError(ctx, err)
+		return
 	}
 
 	req.Header.Set("Host", "ticketing.io")
@@ -19,9 +24,30 @@ func RequireAuth(ctx *gin.Context) {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Println(err)
+		customerrors.SendInternalServerError(ctx, err)
+		return
 	}
 
-	fmt.Println(resp)
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		customerrors.SendInternalServerError(ctx, err)
+		return
+	}
+
+	var currentUser struct {
+		CurrentUser interface{} `json:"currentUser"`
+	}
+
+	err = json.Unmarshal(body, &currentUser)
+	if err != nil {
+		customerrors.SendInternalServerError(ctx, err)
+		return
+	}
+
+	if currentUser.CurrentUser == nil {
+		customerrors.SendBadRequestError(ctx, "Not authorized")
+		return
+	}
+
 	ctx.Next()
 }
