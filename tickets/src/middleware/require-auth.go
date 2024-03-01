@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"ticketing.io/src/customerrors"
+	"ticketing.io/src/helpers"
 )
 
 func RequireAuth(ctx *gin.Context) {
@@ -34,20 +35,22 @@ func RequireAuth(ctx *gin.Context) {
 		return
 	}
 
-	var currentUser struct {
-		CurrentUser interface{} `json:"currentUser"`
+	var jsonResp struct {
+		CurrentUser helpers.User `json:"currentUser"`
 	}
 
-	err = json.Unmarshal(body, &currentUser)
+	err = json.Unmarshal(body, &jsonResp)
 	if err != nil {
 		customerrors.SendInternalServerError(ctx, err)
 		return
 	}
 
-	if currentUser.CurrentUser == nil {
+	if jsonResp.CurrentUser.ID == "" || jsonResp.CurrentUser.Email == "" {
 		customerrors.SendBadRequestError(ctx, "Not authorized")
 		return
 	}
+
+	helpers.SetUser(ctx, &jsonResp.CurrentUser)
 
 	ctx.Next()
 }

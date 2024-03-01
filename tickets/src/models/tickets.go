@@ -46,27 +46,27 @@ func (t *Tickets) FindByID(db *mongo.Database, id string) (*Tickets, error) {
 	return ticket, nil
 }
 
-func (t *Tickets) Create(db *mongo.Database) error {
+func (t *Tickets) Create(db *mongo.Database) (*Tickets, error) {
 	collection := db.Collection(t.GetCollectionName())
 
 	if t.Price == 0 {
-		return errors.New("price is required")
+		return nil, errors.New("price is required")
 	}
 
 	if t.Title == "" {
-		return errors.New("title is required")
+		return nil, errors.New("title is required")
 	}
 
 	if t.UserID == "" {
-		return errors.New("userId is required")
+		return nil, errors.New("userId is required")
 	}
 
 	_, err := collection.InsertOne(context.TODO(), t)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return t, nil
 }
 
 func (t *Tickets) GetCollectionName() string {
@@ -79,6 +79,7 @@ func (t *Tickets) GetTicketsCollection() Model {
 
 func NewTicket(title, userId string, price int) *Tickets {
 	return &Tickets{
+		ID:     primitive.NewObjectID(),
 		Title:  title,
 		UserID: userId,
 		Price:  price,
