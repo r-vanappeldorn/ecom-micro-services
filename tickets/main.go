@@ -21,7 +21,11 @@ func main() {
 	auth := app.Group("/api", middleware.RequireAuth)
 	{
 		auth.POST("/tickets", r.CreateTicket)
-		auth.PUT("/tickets/:id", r.UpdateTicket)
+		auth.PUT(
+			"/tickets/:id",
+			middleware.CheckPermission(db),
+			r.UpdateTicket,
+		)
 	}
 
 	defer close()
