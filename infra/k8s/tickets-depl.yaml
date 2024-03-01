@@ -16,6 +16,10 @@ spec:
         - name: tickets
           image: rvanappeldorn/tickets
           env:
+            - name: DATABASE_NAME
+              value: tickets
+            - name: MONGO_URI
+              value: mongodb://tickets-mongo-srv:27017
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:
