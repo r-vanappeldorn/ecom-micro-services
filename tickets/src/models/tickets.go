@@ -38,12 +38,11 @@ func (t *Tickets) FindByID(db *mongo.Database, id string) (*Tickets, error) {
 		return nil, err
 	}
 
-	var ticket *Tickets
-	if err = collection.FindOne(context.TODO(), bson.M{"id": objectID}).Decode(&ticket); err != nil {
+	if err = collection.FindOne(context.TODO(), bson.M{"id": objectID}).Decode(&t); err != nil {
 		return nil, err
 	}
 
-	return ticket, nil
+	return t, nil
 }
 
 func (t *Tickets) Create(db *mongo.Database) (*Tickets, error) {
