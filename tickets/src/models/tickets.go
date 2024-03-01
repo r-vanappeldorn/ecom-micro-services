@@ -76,6 +76,16 @@ func (t *Tickets) GetTicketsCollection() Model {
 	return &Tickets{}
 }
 
+func (t *Tickets) Update(db *mongo.Database) (*Tickets, error) {
+	collection := db.Collection(t.GetCollectionName())
+	_, err := collection.UpdateOne(context.TODO(), bson.M{"id": t.ID}, bson.M{"$set": t})
+	if err != nil {
+		return nil, err
+	}
+
+	return t, nil
+}
+
 func NewTicket(title, userId string, price int) *Tickets {
 	return &Tickets{
 		ID:     primitive.NewObjectID(),
