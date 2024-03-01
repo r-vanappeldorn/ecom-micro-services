@@ -1,19 +1,24 @@
 package main
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
+	"ticketing.io/src/config"
+	"ticketing.io/src/database"
+	"ticketing.io/src/middleware"
+	"ticketing.io/src/routes"
 )
 
-func main()  {
-	r := gin.Default()
+func main() {
+	app := gin.Default()
 
-	r.GET("/api/tickets", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{
-			"message": "Test",
-		})
-	})
+	conf := config.Init()
+	db, close := database.Init(conf)
 
-	r.Run(":8080")
+	r := routes.New(db)
+	app.GET("/api/tickets", r.GetTickets)
+	app.POST("/api/tickets", middleware.RequireAuth, r.CreateTicket)
+
+	defer close()
+	app.Run(":8080")
+
 }
