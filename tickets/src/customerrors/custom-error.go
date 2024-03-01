@@ -21,5 +21,5 @@ func (e *CustomError) GetStatus() int {
 }
 
 func Send(ctx *gin.Context, err CustomErrorInterface) {
-	ctx.JSON(err.GetStatus(), gin.H{"errors": err.Serialize()})
+	ctx.AbortWithStatusJSON(err.GetStatus(), gin.H{"errors": err.Serialize()})
 }
