@@ -8,8 +8,9 @@ import (
 )
 
 type UpdateTicket struct {
-	Title string `json:"title"`
-	Price int    `json:"price"`
+	Title       string `json:"title"`
+	Price       int    `json:"price"`
+	Description string `json:"description"`
 }
 
 func (r *Routes) UpdateTicket(ctx *gin.Context) {
@@ -36,6 +37,10 @@ func (r *Routes) UpdateTicket(ctx *gin.Context) {
 
 	if req.Title != "" {
 		ticket.Title = req.Title
+	}
+
+	if req.Description != "" {
+		ticket.Description = req.Description
 	}
 
 	updatedTicket, err := ticket.Update(r.DB)
