@@ -8,8 +8,9 @@ import (
 )
 
 type CreateTicketRequest struct {
-	Title string `json:"title" binding:"required"`
-	Price int    `json:"price" binding:"required"`
+	Title       string `json:"title" binding:"required"`
+	Price       int    `json:"price" binding:"required"`
+	Description string `json:"description" binding:"required"`
 }
 
 func (r *Routes) CreateTicket(ctx *gin.Context) {

@@ -10,10 +10,11 @@ import (
 )
 
 type Tickets struct {
-	ID     primitive.ObjectID `json:"id,omitempty" bson:"id,omitempty"`
-	Title  string             `json:"title,omitempty" bson:"title,omitempty"`
-	Price  int                `json:"price,omitempty" bson:"price,omitempty"`
-	UserID string             `json:"userId,omitempty" bson:"userId,omitempty"`
+	ID          primitive.ObjectID `json:"id,omitempty" bson:"id,omitempty"`
+	Title       string             `json:"title,omitempty" bson:"title,omitempty"`
+	Description string             `json:"description,omitempty" bson:"description,omitempty"`
+	Price       int                `json:"price,omitempty" bson:"price,omitempty"`
+	UserID      string             `json:"userId,omitempty" bson:"userId,omitempty"`
 }
 
 func (t *Tickets) FindAll(db *mongo.Database) ([]*Tickets, error) {
@@ -58,6 +59,10 @@ func (t *Tickets) Create(db *mongo.Database) (*Tickets, error) {
 
 	if t.UserID == "" {
 		return nil, errors.New("userId is required")
+	}
+
+	if t.Description == "" {
+		return nil, errors.New("description is required")
 	}
 
 	_, err := collection.InsertOne(context.TODO(), t)
